@@ -1,7 +1,6 @@
 from io import TextIOWrapper
 from pathlib import Path
 import sys
-from typing import List
 
 # Read file
 # ensure it's a fastq file
@@ -35,7 +34,6 @@ def main():
                 fastq_seq = read_block(file=file)
                 if (check_block(fastq_seq=fastq_seq) == True):
                     score_matrix.append(get_score(scoreLine=get_scoreLine(fastq_seq=fastq_seq)))
-                    count+=1
             # if we've reached EOF that is
             except StopIteration as e:
                 # print(e)
