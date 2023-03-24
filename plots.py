@@ -6,8 +6,9 @@
         # density distribution
         # histogram   
 
+import seaborn as sns
 import matplotlib.pyplot as plt
-# import numpy as np
+import numpy as np
 from io import TextIOWrapper
 from pathlib import Path
 import sys
@@ -55,6 +56,7 @@ def main():
                 break
     # print(read_matrix)
     plot_bar(read_matrix=read_matrix)
+    # plot_density(read_matrix=read_matrix)
 
 # return a block from the file
 def read_block(file: TextIOWrapper):
@@ -92,11 +94,14 @@ def get_read(Line: str, position: int, length: int):
     return Line[position]
 
 def plot_bar(read_matrix):
-    bins = ['A','T','C','G','N']
-    plt.bar(x=read_matrix, height=9) 
+    bins, counts = np.unique(read_matrix, return_counts=True)
+    plt.bar(x=bins, height=counts) 
+    plt.xlabel("Base Call")
+    plt.ylabel("No. of bases")
+    plt.show()
 
-# def plot_density():
+# def plot_density(read_matrix):
+    # sns.kdeplot(read_matrix)
 
-# def plot_box():
 
 main()
