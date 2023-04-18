@@ -25,20 +25,23 @@ def main():
     # file_path = "ext.fastq"
     
     # check if it's a file of the correct type
-    Path(file_path).is_file() and Path(file_path).suffix == '.fastq'
+    if (Path(file_path).is_file() and Path(file_path).suffix == '.fastq'):
+        with open(file_path) as file:
+            # iterate over the whole file and generate matrix
+            while (True):
+                try:
+                    fastq_seq = read_block(file=file)
+                    if (check_block(fastq_seq=fastq_seq) == True):
+                        score_matrix.append(get_score(scoreLine=get_scoreLine(fastq_seq=fastq_seq)))
+                # if we've reached EOF that is
+                except StopIteration as e:
+                    # print(e)
+                    break
+        print(score_matrix)
+    else:
+        print("The input file is incorrect/doesn't exist.", file=sys.stderr)
 
-    with open(file_path) as file:
-        # iterate over the whole file and generate matrix
-        while (True):
-            try:
-                fastq_seq = read_block(file=file)
-                if (check_block(fastq_seq=fastq_seq) == True):
-                    score_matrix.append(get_score(scoreLine=get_scoreLine(fastq_seq=fastq_seq)))
-            # if we've reached EOF that is
-            except StopIteration as e:
-                # print(e)
-                break
-    print(score_matrix)
+
 
 # TODO:
 # Specify return types
