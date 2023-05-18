@@ -25,28 +25,12 @@ def main():
     
     gen_scoreMatrix(file_path=file_path)
     score_matrix = np.matrix(score_matrix)
-    # print(score_matrix)
-    # print(score_matrix.T)
-
-    # score_matrix = score_matrix.T
-    # print(len(score_matrix))
-
-    # print(score_matrix[1])
-
-    # for i in range(len(score_matrix)):
-        # plot_for_position(i)
 
     r,c = score_matrix.shape
     fig, ax = plt.subplots()
 
     meanline_x = np.array(np.arange(1, c+1))
     meanline_y = np.matrix(np.mean(score_matrix, 0)).A1
-    # print(meanline_x)
-    # print(meanline_y)
-    
-    # import pdb; pdb.set_trace()
-    
-    # breakpoint
     
     # plot the boxes in boxplot
     ax.boxplot(x=score_matrix, sym='', widths=0.75, capwidths=0.7,
@@ -54,33 +38,27 @@ def main():
                 boxprops={"facecolor": "yellow", "edgecolor": "black"},
                 )
 
-
-
-    # print(c) # No. of columns in the matrix
-
     ax.set_ylim(0,42)
-    # for i in range(0, l, 2):
 
+    # Plot the coloured backgrounds
     ax.axvspan(xmin=1-0.35, xmax=c+0.35, ymin=0, ymax=0.55, facecolor='green', alpha=0.2)
     ax.axvspan(xmin=1-0.35, xmax=c+0.35, ymin=0.55, ymax=0.775, facecolor='yellow', alpha=0.2)
     ax.axvspan(xmin=1-0.35, xmax=c+0.35, ymin=0.775, ymax=1, facecolor='red', alpha=0.2)
-      # ax.axvspan(xmin=score_matrix[i+1], xmax=score_matrix[i+2], ymin=0, ymax=20/36, facecolor='green', alpha=0.4)
-        # ax.axvspan(xmin=(100*i/l), xmax=100*(i+1)/l, ymin=0, ymax=20/36, facecolor='green', alpha=0.2)
-    # plt.axes.Axes.axvspan(xmin=0, xmax= 1, ymin=0, ymax=0.55, alpha=0.5)
+
+    for i in range(2,c+1,2):
+        ax.axvspan(xmin=i-0.5, xmax=i+0.5, ymin=0, ymax=0.55, facecolor='green', alpha=0.4)
+        ax.axvspan(xmin=i-0.5, xmax=i+0.5, ymin=0.55, ymax=0.775, facecolor='yellow', alpha=0.4)
+        ax.axvspan(xmin=i-0.5, xmax=i+0.5, ymin=0.775, ymax=1, facecolor='red', alpha=0.4)
 
     # Plot the blue line denoting per base average
     ax.plot(meanline_x, meanline_y, 'b', linewidth=0.7)
 
-    plt.xticks(ticks=np.arange(1,c+1,2), fontsize=10)
+
+    plt.xticks(ticks=np.arange(1,c+1,2), labels=np.arange(1,c+1,2), fontsize=10)
     plt.yticks(ticks=np.arange(0,43,2), fontsize=10)
     plt.xlabel("Position in read (bp)")
     plt.rcParams['font.size'] = '10'
     plt.show()
-
-    
-    # sns.catplot(data=score_matrix.T, kind = "box")
-
-    # sns.show()
 
     
     
@@ -92,7 +70,6 @@ def check_usage():
     else:
         return True
 
-
 def check_input(file_path:str) -> bool:
     # check if it's a file of the correct type
     if not(Path(file_path).is_file() and Path(file_path).suffix == '.fastq'):
@@ -100,7 +77,6 @@ def check_input(file_path:str) -> bool:
         return False
     else:
         return True
-
 
 # return a block from the file
 def read_block(file: TextIOWrapper):
@@ -147,27 +123,5 @@ def gen_scoreMatrix(file_path: str):
             except StopIteration as e:
                 # print(e)
                 break
-
-def plot_for_position(pos: int):
-    global score_matrix
-    global plt
-    # print(score_matrix[pos])
-    plt.boxplot(x=score_matrix[pos], sym='')
-
-
-
-    # x = []
-    # for line in score_matrix:
-    #     x.append(line[pos])
-    
-    # x_max = max(x)
-    # x_min = min(x)
-    # x_median = np.median(x)
-    # x_upper_quartile = np.quantile(x, q=0.75)
-    # x_lower_quartile = np.quantile(x, q=0.25)
-
-    # x = np.array(x)
-    # print("Pos:", pos, "data:", x)
-    # sns.catplot(data=x, kind= "box")
 
 main()
